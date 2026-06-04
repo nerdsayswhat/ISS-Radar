@@ -241,6 +241,14 @@ if (navigator.geolocation) {
 // ----------------------
 // TLE
 let issSatrec = null;
+let targetPos = new THREE.Vector3();
+let currentPos = new THREE.Vector3();
+
+let nextApproachTime = null;
+let nextApproachDist = Infinity;
+let calculating = false;
+
+let locked = false;
 
 async function fetchTLE() {
   try {
@@ -387,7 +395,10 @@ if (bestTime) {
   nextApproachDist = bestDist;
 }
 
-if (!nextApproachTime) nextApproachDist = Infinity;
+if (!bestTime) {
+  nextApproachTime = null;
+  nextApproachDist = Infinity;
+}
 
   if (bestDist <= 500) locked = true;
 
