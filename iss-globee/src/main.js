@@ -243,6 +243,7 @@ if (navigator.geolocation) {
 let issSatrec = null;
 
 async function fetchTLE() {
+  console.log("fetchTLE CALLED");
   try {
     const res = await fetch('https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=text');
     const tleText = await res.text();
