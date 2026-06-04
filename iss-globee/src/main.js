@@ -243,11 +243,19 @@ if (navigator.geolocation) {
 let issSatrec = null;
 
 async function fetchTLE() {
-  const res = await fetch('https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=json');
-  const data = await res.json();
+  try {
+    const res = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+    const data = await res.json();
 
-  const tle = data[0];
-  issSatrec = satellite.twoline2satrec(tle.TLE_LINE1, tle.TLE_LINE2);
+    // fallback TLE from known stable source
+    const tleRes = await fetch('https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=text');
+    const tleText = await tleRes.text();
+
+    const lines = tleText.trim().split('\n');
+    issSatrec = satellite.twoline2satrec(lines[1], lines[2]);
+  } catch (e) {
+    console.log("TLE fetch failed:", e);
+  }
 }
 fetchTLE();
 
