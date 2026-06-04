@@ -323,8 +323,6 @@ function updateOrbitPath() {
 
 // ----------------------
 // ISS FETCH (UPDATED - NO LOCALHOST)
-let targetPos = new THREE.Vector3();
-let currentPos = new THREE.Vector3();
 
 async function fetchISS() {
   try {
