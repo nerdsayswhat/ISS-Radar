@@ -384,6 +384,11 @@ setInterval(calculateNextApproachUnder500kmOptimized, 15000);
 function animate() {
   requestAnimationFrame(animate);
 
+  console.log({
+  sat: !!issSatrec,
+  target: targetPos,
+  user: userLat,
+});
   currentPos.lerp(targetPos, 0.05);
   issMarker.position.copy(currentPos);
 
