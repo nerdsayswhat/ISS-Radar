@@ -243,9 +243,11 @@ if (navigator.geolocation) {
 let issSatrec = null;
 
 async function fetchTLE() {
-  console.log("fetchTLE CALLED");
   try {
-    const res = await fetch('https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=text');
+    const res = await fetch(
+      'https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=tle'
+    );
+
     const tleText = await res.text();
 
     const lines = tleText
@@ -253,26 +255,17 @@ async function fetchTLE() {
       .map(l => l.trim())
       .filter(l => l.length > 0);
 
-    // Find actual TLE lines (they always start with 1 and 2 after name line)
-    let line1, line2;
-
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].startsWith('1 ') && lines[i + 1]?.startsWith('2 ')) {
-        line1 = lines[i];
-        line2 = lines[i + 1];
-        break;
-      }
-    }
+    const line1 = lines[1];
+    const line2 = lines[2];
 
     if (!line1 || !line2) {
-      console.log("Invalid TLE format received:", lines);
+      console.log("Invalid TLE format:", lines);
       return;
     }
-    console.log("TLE INPUT:", line1, line2);
 
     issSatrec = satellite.twoline2satrec(line1, line2);
 
-    console.log("TLE loaded successfully");
+    console.log("TLE LOADED SUCCESSFULLY");
   } catch (e) {
     console.log("TLE fetch failed:", e);
   }
