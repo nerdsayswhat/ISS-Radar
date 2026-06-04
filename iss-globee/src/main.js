@@ -247,9 +247,30 @@ async function fetchTLE() {
     const res = await fetch('https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=text');
     const tleText = await res.text();
 
-    const lines = tleText.trim().split('\n');
+    const lines = tleText
+      .split('\n')
+      .map(l => l.trim())
+      .filter(l => l.length > 0);
 
-    issSatrec = satellite.twoline2satrec(lines[1], lines[2]);
+    // Find actual TLE lines (they always start with 1 and 2 after name line)
+    let line1, line2;
+
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].startsWith('1 ') && lines[i + 1]?.startsWith('2 ')) {
+        line1 = lines[i];
+        line2 = lines[i + 1];
+        break;
+      }
+    }
+
+    if (!line1 || !line2) {
+      console.log("Invalid TLE format received:", lines);
+      return;
+    }
+
+    issSatrec = satellite.twoline2satrec(line1, line2);
+
+    console.log("TLE loaded successfully");
   } catch (e) {
     console.log("TLE fetch failed:", e);
   }
