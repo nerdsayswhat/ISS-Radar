@@ -243,9 +243,11 @@ if (navigator.geolocation) {
 let issSatrec = null;
 
 async function fetchTLE() {
-  const res = await fetch('http://localhost:3000/iss-tle');
+  const res = await fetch('https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=json');
   const data = await res.json();
-  issSatrec = satellite.twoline2satrec(data.line1, data.line2);
+
+  const tle = data[0];
+  issSatrec = satellite.twoline2satrec(tle.TLE_LINE1, tle.TLE_LINE2);
 }
 fetchTLE();
 
@@ -284,7 +286,6 @@ function updateOrbitPath() {
 
   orbitGeometry.setFromPoints(points);
 
-  // ⭐ ONLY ADDITION — label follows orbit
   if (points.length > 0) {
     const mid = Math.floor(points.length / 2);
     orbitLabel.position.copy(points[mid]);
@@ -292,22 +293,15 @@ function updateOrbitPath() {
 }
 
 // ----------------------
-// ISS FETCH
+// ISS FETCH (UPDATED - NO LOCALHOST)
 let targetPos = new THREE.Vector3();
 let currentPos = new THREE.Vector3();
 
-// ----------------------
-// ENGINE STATE
-let calculating = false;
-let locked = false;
-
-let nextApproachTime = null;
-let nextApproachDist = Infinity;
-
 async function fetchISS() {
   try {
-    const res = await fetch('http://localhost:3000/iss-position');
+    const res = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
     const data = await res.json();
+
     targetPos = latLngToVector3(data.latitude, data.longitude);
   } catch {}
 }
