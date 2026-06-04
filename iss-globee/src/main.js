@@ -363,7 +363,9 @@ async function calculateNextApproachUnder500kmOptimized() {
   }
 
   nextApproachTime = bestTime;
-  nextApproachDist = bestDist;
+nextApproachDist = bestDist;
+
+if (!nextApproachTime) nextApproachDist = Infinity;
 
   if (bestDist <= 500) locked = true;
 
