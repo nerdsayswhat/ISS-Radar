@@ -330,18 +330,22 @@ async function fetchISS() {
 // ----------------------
 // COUNTDOWN UI
 function updateCountdown() {
-  if (!nextApproachTime) return;
+  if (typeof nextApproachTime === "undefined" || nextApproachTime === null) return;
+  if (typeof nextApproachDist === "undefined") return;
 
   const diff = nextApproachTime - new Date();
   if (diff < 0) return;
 
   const s = Math.floor(diff / 1000);
-  const h = String(Math.floor(s / 3600)).padStart(2,'0');
-  const m = String(Math.floor((s % 3600) / 60)).padStart(2,'0');
-  const sec = String(s % 60).padStart(2,'0');
+  const h = String(Math.floor(s / 3600)).padStart(2, '0');
+  const m = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+  const sec = String(s % 60).padStart(2, '0');
 
-  document.getElementById("iss-timer").innerText =
-    `Next closest approach: ${h}:${m}:${sec} (${nextApproachDist.toFixed(0)} km)`;
+  const el = document.getElementById("iss-timer");
+  if (!el) return;
+
+  el.innerText =
+    `Next closest approach: ${h}:${m}:${sec} (${nextApproachDist?.toFixed?.(0) ?? "--"} km)`;
 }
 
 // ----------------------
@@ -378,8 +382,10 @@ async function calculateNextApproachUnder500kmOptimized() {
     }
   }
 
+if (bestTime) {
   nextApproachTime = bestTime;
-nextApproachDist = bestDist;
+  nextApproachDist = bestDist;
+}
 
 if (!nextApproachTime) nextApproachDist = Infinity;
 
