@@ -1,0 +1,26 @@
+{
+  "name": "iss-globee",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^8.0.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "globe.gl": "^2.45.1",
+    "node-fetch": "^3.3.2",
+    "satellite.js": "^6.0.2",
+    "three": "^0.183.2"
+  },
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
