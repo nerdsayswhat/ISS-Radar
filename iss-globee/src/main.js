@@ -267,6 +267,7 @@ async function fetchTLE() {
       console.log("Invalid TLE format received:", lines);
       return;
     }
+    console.log("TLE INPUT:", line1, line2);
 
     issSatrec = satellite.twoline2satrec(line1, line2);
 
