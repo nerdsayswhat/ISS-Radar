@@ -29,7 +29,7 @@ controls.dampingFactor = 0.05;
 
 // ----------------------
 // SAFE CAMERA START
-camera.position.set(0, 0, 3.2);
+camera.position.set(0, 0, 5);
 controls.target.set(0, 0, 0);
 controls.update();
 
